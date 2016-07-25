@@ -1,17 +1,17 @@
-# IRL this woudl be a db table...
-allPosts = [];
-
 class Post( object ):
+
+    # storage for Post objects
+    allPosts = [];
 
     def __init__( self, postID, repostID, shares ):
         # in case post is brand new and don't have an id yet
         if postID is None:
-            postID = len(allPosts) + 1;
+            postID = len(self.allPosts) + 1;
 
         self.postID = postID;
         self.shares = shares;
         self.repostID = repostID;
-        # add post to 'database'
+        # add post to storage
         self.storePost();
 
     def updateShares( self, shares ):
@@ -19,13 +19,13 @@ class Post( object ):
         self.shares += shares;
 
     def storePost(self):
-        allPosts.append(self);
+        self.allPosts.append(self);
 
     def updateOriginalPosts( self, repostID, addedShares ):
         if repostID > -1:
             # since this was a re-post, find which post it shares by looking up
             # the post with postID same as this repostID
-            sharedPost = next((p for p in allPosts if p.postID == repostID), None);
+            sharedPost = next((p for p in self.allPosts if p.postID == repostID), None);
             if sharedPost != None:
                 # add to the post's shares number
                 sharedPost.updateShares(addedShares);
@@ -38,11 +38,11 @@ class Post( object ):
         # update number of shares on shared post(s)
         self.updateOriginalPosts(self.repostID, self.shares);
 
-    @staticmethod
-    def getAllPosts():
-        return allPosts;
+    @classmethod
+    def getAllPosts( self ):
+        return self.allPosts;
 
-    @staticmethod
-    def printAllPostShares():
-        for p in allPosts:
+    @classmethod
+    def printAllPostShares( self ):
+        for p in self.allPosts:
             print p.postID, p.shares;
