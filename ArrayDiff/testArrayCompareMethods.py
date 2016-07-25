@@ -1,5 +1,5 @@
 import unittest;
-from arrayDiff import ArrayDiff
+from arrayDiff import ArrayDiff;
 
 class TestArrayCompareMethods(unittest.TestCase):
 
